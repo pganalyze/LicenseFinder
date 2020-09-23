@@ -4,7 +4,7 @@ module LicenseFinder
   class CsvReport < Report
     COMMA_SEP = ','.freeze
     NEWLINE_SEP = '\@NL'.freeze
-    AVAILABLE_COLUMNS = %w[name version authors licenses license_links approved summary description homepage install_path package_manager groups texts notice].freeze
+    AVAILABLE_COLUMNS = %w[name version authors licenses license_links approved summary description homepage install_path package_manager groups texts notice reason].freeze
     MISSING_DEPENDENCY_TEXT = 'This package is not installed. Please install to determine licenses.'.freeze
 
     def initialize(dependencies, options)
@@ -94,6 +94,10 @@ module LicenseFinder
       else
         dep.groups.join(self.class::COMMA_SEP)
       end
+    end
+
+    def format_reason(dep)
+      dep.manual_approval.nil? ? '' : dep.manual_approval.why
     end
   end
 end
